@@ -61,17 +61,35 @@ const Budget = () => {
 
   const updateBudgetSpending = async () => {
     try {
-      const transactions = await transactionService.getAll();
+const transactions = await transactionService.getAll();
       
       const updatedBudgets = budgets.map(budget => {
         const monthTransactions = transactions.filter(t => {
-          const transactionMonth = new Date(t.date).toISOString().slice(0, 7);
-          return t.type === "expense" && 
-                 t.category === budget.category && 
-                 transactionMonth === budget.month;
+          // Check if date_c exists and is valid before parsing
+          if (!t.date_c) {
+            console.warn('Transaction missing date_c field:', t);
+            return false;
+          }
+          
+          try {
+            const transactionDate = new Date(t.date_c);
+            // Check if date is valid
+            if (isNaN(transactionDate.getTime())) {
+              console.warn('Invalid date_c value:', t.date_c, 'in transaction:', t);
+              return false;
+            }
+            
+            const transactionMonth = transactionDate.toISOString().slice(0, 7);
+            return t.type_c === "expense" && 
+                   t.category_c === budget.category_c && 
+                   transactionMonth === budget.month_c;
+          } catch (error) {
+            console.warn('Date parsing error for transaction:', t, error);
+            return false;
+          }
         });
         
-        const spent = monthTransactions.reduce((sum, t) => sum + t.amount, 0);
+        const spent = monthTransactions.reduce((sum, t) => sum + (t.amount_c || 0), 0);
         return { ...budget, spent };
       });
       
