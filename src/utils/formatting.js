@@ -6,18 +6,28 @@ export const formatCurrency = (amount) => {
 };
 
 export const formatDate = (date) => {
-  return new Intl.DateFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  }).format(new Date(date));
+  try {
+    return new Intl.DateFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }).format(new Date(date));
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return date?.toString() || "Invalid Date";
+  }
 };
 
 export const formatDateShort = (date) => {
-  return new Intl.DateFormat("en-US", {
-    month: "short",
-    day: "numeric"
-  }).format(new Date(date));
+  try {
+    return new Intl.DateFormat("en-US", {
+      month: "short",
+      day: "numeric"
+    }).format(new Date(date));
+  } catch (error) {
+    console.error("Error formatting short date:", error);
+    return date?.toString() || "Invalid Date";
+  }
 };
 
 export const formatPercentage = (value) => {
