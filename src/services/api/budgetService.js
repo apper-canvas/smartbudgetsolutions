@@ -1,10 +1,6 @@
 import { toast } from 'react-toastify';
 
 class BudgetService {
-  constructor() {
-    this.tableName = 'budget_c';
-    this.apperClient = null;
-  }
 
   getClient() {
     if (!this.apperClient && window.ApperSDK) {
@@ -19,16 +15,14 @@ class BudgetService {
 
 constructor() {
     this.tableName = 'budget_c';
-    
-    // Initialize ApperClient with project credentials
-    const { ApperClient } = window.ApperSDK;
-    this.apperClient = new ApperClient({
-      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-    });
   }
 
-  async getAll() {
+async getAll() {
+    const client = this.getClient();
+    if (!client) {
+      throw new Error('ApperSDK not available');
+    }
+    
     try {
       const params = {
         fields: [
@@ -43,7 +37,7 @@ constructor() {
         pagingInfo: {"limit": 100, "offset": 0}
       };
 
-      const response = await this.apperClient.fetchRecords(this.tableName, params);
+const response = await client.fetchRecords(this.tableName, params);
 
       if (!response.success) {
         console.error(response.message);
@@ -58,7 +52,12 @@ constructor() {
     }
   }
 
-  async getById(id) {
+async getById(id) {
+    const client = this.getClient();
+    if (!client) {
+      throw new Error('ApperSDK not available');
+    }
+    
     try {
       const params = {
         fields: [
@@ -71,7 +70,7 @@ constructor() {
         ]
       };
 
-      const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
+const response = await client.getRecordById(this.tableName, parseInt(id), params);
 
       if (!response.success) {
         console.error(response.message);
@@ -86,7 +85,12 @@ constructor() {
     }
   }
 
-  async create(budgetData) {
+async create(budgetData) {
+    const client = this.getClient();
+    if (!client) {
+      throw new Error('ApperSDK not available');
+    }
+    
     try {
       const params = {
         records: [{
@@ -99,7 +103,7 @@ constructor() {
         }]
       };
 
-      const response = await this.apperClient.createRecord(this.tableName, params);
+const response = await client.createRecord(this.tableName, params);
 
       if (!response.success) {
         console.error(response.message);
@@ -129,7 +133,12 @@ constructor() {
     }
   }
 
-  async update(id, budgetData) {
+async update(id, budgetData) {
+    const client = this.getClient();
+    if (!client) {
+      throw new Error('ApperSDK not available');
+    }
+    
     try {
       const params = {
         records: [{
@@ -143,7 +152,7 @@ constructor() {
         }]
       };
 
-      const response = await this.apperClient.updateRecord(this.tableName, params);
+const response = await client.updateRecord(this.tableName, params);
 
       if (!response.success) {
         console.error(response.message);
@@ -173,13 +182,18 @@ constructor() {
     }
   }
 
-  async delete(id) {
+async delete(id) {
+    const client = this.getClient();
+    if (!client) {
+      throw new Error('ApperSDK not available');
+    }
+    
     try {
       const params = {
         RecordIds: [parseInt(id)]
       };
 
-      const response = await this.apperClient.deleteRecord(this.tableName, params);
+const response = await client.deleteRecord(this.tableName, params);
 
       if (!response.success) {
         console.error(response.message);
