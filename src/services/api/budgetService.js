@@ -17,6 +17,17 @@ class BudgetService {
     return this.apperClient;
   }
 
+constructor() {
+    this.tableName = 'budget_c';
+    
+    // Initialize ApperClient with project credentials
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+  }
+
   async getAll() {
     try {
       const params = {
