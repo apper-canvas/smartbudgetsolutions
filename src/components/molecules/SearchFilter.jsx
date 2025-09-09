@@ -46,7 +46,7 @@ const SearchFilter = ({ onFilter, categories = [] }) => {
             value={filters.category}
             onChange={(e) => handleFilterChange("category", e.target.value)}
           >
-            <option value="">All Categories</option>
+<option value="">All Categories</option>
             {categories.map(category => (
               <option key={category} value={category}>{category}</option>
             ))}
