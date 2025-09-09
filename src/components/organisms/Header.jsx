@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
-
+import { AuthContext } from "../App";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
 
   const navigation = [
     { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
@@ -19,6 +22,14 @@ const Header = () => {
   const getPageTitle = () => {
     const current = navigation.find(item => item.path === location.pathname);
     return current ? current.name : "Dashboard";
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -39,7 +50,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
+          <nav className="hidden md:flex items-center space-x-1">
             {navigation.map((item) => (
               <NavLink
                 key={item.name}
@@ -57,10 +68,42 @@ const Header = () => {
                 <span>{item.name}</span>
               </NavLink>
             ))}
+            
+            {/* User Menu and Logout */}
+            <div className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200">
+              {user && (
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user.firstName?.[0] || user.emailAddress?.[0] || 'U'}
+                    </span>
+                  </div>
+                  <span className="text-sm text-text-secondary hidden lg:block">
+                    {user.firstName || user.emailAddress}
+                  </span>
+                </div>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center space-x-1"
+              >
+                <ApperIcon name="LogOut" size={16} />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
+            </div>
           </nav>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {user && (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <span className="text-white text-sm font-medium">
+                  {user.firstName?.[0] || user.emailAddress?.[0] || 'U'}
+                </span>
+              </div>
+            )}
             <Button
               variant="ghost"
               size="sm"
@@ -102,6 +145,19 @@ const Header = () => {
                   <span>{item.name}</span>
                 </NavLink>
               ))}
+              
+              {/* Mobile Logout Button */}
+              <div className="pt-2 mt-2 border-t border-gray-200">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center space-x-2"
+                >
+                  <ApperIcon name="LogOut" size={16} />
+                  <span>Logout</span>
+                </Button>
+              </div>
             </div>
           </motion.div>
         )}
