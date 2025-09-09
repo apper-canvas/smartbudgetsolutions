@@ -199,4 +199,3 @@ class TransactionService {
 }
 
 export const transactionService = new TransactionService();
-export const transactionService = new TransactionService();

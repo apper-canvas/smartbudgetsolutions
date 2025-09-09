@@ -195,4 +195,3 @@ class SavingsGoalService {
 }
 
 export const savingsGoalService = new SavingsGoalService();
-export const savingsGoalService = new SavingsGoalService();
