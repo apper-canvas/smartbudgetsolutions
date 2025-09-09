@@ -60,9 +60,12 @@ const Dashboard = () => {
     setEditingTransaction(null);
   };
 
-  // Calculate statistics for current month
+// Calculate statistics for current month
   const currentMonthTransactions = transactions.filter(t => {
-    const transactionMonth = new Date(t.date).toISOString().slice(0, 7);
+    if (!t.date_c) return false;
+    const date = new Date(t.date_c);
+    if (isNaN(date.getTime())) return false;
+    const transactionMonth = date.toISOString().slice(0, 7);
     return transactionMonth === selectedMonth;
   });
 

@@ -1,13 +1,15 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
+import { transactionService } from "@/services/api/transactionService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import SearchFilter from "@/components/molecules/SearchFilter";
+import CategoryBadge from "@/components/molecules/CategoryBadge";
 import Badge from "@/components/atoms/Badge";
 import Card from "@/components/atoms/Card";
-import CategoryBadge from "@/components/molecules/CategoryBadge";
-import SearchFilter from "@/components/molecules/SearchFilter";
-import ApperIcon from "@/components/ApperIcon";
-import { transactionService } from "@/services/api/transactionService";
+import Button from "@/components/atoms/Button";
+import Transactions from "@/components/pages/Transactions";
 import { formatCurrency, formatDate } from "@/utils/formatting";
 
 const TransactionsList = ({ 
@@ -61,7 +63,7 @@ const TransactionsList = ({
   const categories = [...new Set(transactions.map(t => t.category))];
 
   // Update filtered transactions when transactions change
-  useState(() => {
+useEffect(() => {
     setFilteredTransactions(transactions);
   }, [transactions]);
 
