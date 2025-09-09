@@ -3,21 +3,6 @@ import { toast } from 'react-toastify';
 class TransactionService {
   constructor() {
     this.tableName = 'transaction_c';
-    this.apperClient = null;
-  }
-
-  getClient() {
-    if (!this.apperClient && window.ApperSDK) {
-      const { ApperClient } = window.ApperSDK;
-      this.apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-    }
-    return this.apperClient;
-  }
-
-constructor() {
     // Initialize ApperClient with project credentials
     const { ApperClient } = window.ApperSDK;
     this.apperClient = new ApperClient({
