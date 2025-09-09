@@ -196,9 +196,9 @@ const TransactionModal = ({ isOpen, onClose, transaction = null, onSuccess }) =>
                 error={errors.category}
               >
                 <option value="">Select a category</option>
-                {filteredCategories.map(category => (
-                  <option key={category.Id} value={category.name}>
-                    {category.name}
+{filteredCategories.map(category => (
+                  <option key={category.Id} value={category.Name}>
+                    {category.Name}
                   </option>
                 ))}
               </Select>
