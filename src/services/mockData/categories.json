@@ -1,0 +1,121 @@
+[
+  {
+    "Id": 1,
+    "name": "Food & Dining",
+    "type": "expense",
+    "color": "#FF6B6B",
+    "isDefault": true
+  },
+  {
+    "Id": 2,
+    "name": "Transportation",
+    "type": "expense",
+    "color": "#4ECDC4",
+    "isDefault": true
+  },
+  {
+    "Id": 3,
+    "name": "Shopping",
+    "type": "expense",
+    "color": "#45B7D1",
+    "isDefault": true
+  },
+  {
+    "Id": 4,
+    "name": "Entertainment",
+    "type": "expense",
+    "color": "#FFA07A",
+    "isDefault": true
+  },
+  {
+    "Id": 5,
+    "name": "Bills & Utilities",
+    "type": "expense",
+    "color": "#98D8C8",
+    "isDefault": true
+  },
+  {
+    "Id": 6,
+    "name": "Healthcare",
+    "type": "expense",
+    "color": "#F7DC6F",
+    "isDefault": true
+  },
+  {
+    "Id": 7,
+    "name": "Education",
+    "type": "expense",
+    "color": "#BB8FCE",
+    "isDefault": true
+  },
+  {
+    "Id": 8,
+    "name": "Travel",
+    "type": "expense",
+    "color": "#85C1E9",
+    "isDefault": true
+  },
+  {
+    "Id": 9,
+    "name": "Groceries",
+    "type": "expense",
+    "color": "#F8C471",
+    "isDefault": true
+  },
+  {
+    "Id": 10,
+    "name": "Insurance",
+    "type": "expense",
+    "color": "#82E0AA",
+    "isDefault": true
+  },
+  {
+    "Id": 11,
+    "name": "Investments",
+    "type": "expense",
+    "color": "#F1948A",
+    "isDefault": true
+  },
+  {
+    "Id": 12,
+    "name": "Other Expense",
+    "type": "expense",
+    "color": "#85D1C0",
+    "isDefault": true
+  },
+  {
+    "Id": 13,
+    "name": "Salary",
+    "type": "income",
+    "color": "#4CAF50",
+    "isDefault": true
+  },
+  {
+    "Id": 14,
+    "name": "Freelance",
+    "type": "income",
+    "color": "#2196F3",
+    "isDefault": true
+  },
+  {
+    "Id": 15,
+    "name": "Business",
+    "type": "income",
+    "color": "#FF9800",
+    "isDefault": true
+  },
+  {
+    "Id": 16,
+    "name": "Gifts",
+    "type": "income",
+    "color": "#E91E63",
+    "isDefault": true
+  },
+  {
+    "Id": 17,
+    "name": "Other Income",
+    "type": "income",
+    "color": "#9C27B0",
+    "isDefault": true
+  }
+]
