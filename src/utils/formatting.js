@@ -7,11 +7,24 @@ export const formatCurrency = (amount) => {
 
 export const formatDate = (date) => {
   try {
-    return new Intl.DateFormat("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
-    }).format(new Date(date));
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      return date?.toString() || "Invalid Date";
+    }
+    
+    // Check if Intl.DateFormat is available
+    if (typeof Intl !== 'undefined' && Intl.DateFormat) {
+      return new Intl.DateFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      }).format(dateObj);
+    } else {
+      // Fallback for environments without Intl support
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+    }
   } catch (error) {
     console.error("Error formatting date:", error);
     return date?.toString() || "Invalid Date";
@@ -20,10 +33,23 @@ export const formatDate = (date) => {
 
 export const formatDateShort = (date) => {
   try {
-    return new Intl.DateFormat("en-US", {
-      month: "short",
-      day: "numeric"
-    }).format(new Date(date));
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      return date?.toString() || "Invalid Date";
+    }
+    
+    // Check if Intl.DateFormat is available
+    if (typeof Intl !== 'undefined' && Intl.DateFormat) {
+      return new Intl.DateFormat("en-US", {
+        month: "short",
+        day: "numeric"
+      }).format(dateObj);
+    } else {
+      // Fallback for environments without Intl support
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[dateObj.getMonth()]} ${dateObj.getDate()}`;
+    }
   } catch (error) {
     console.error("Error formatting short date:", error);
     return date?.toString() || "Invalid Date";
