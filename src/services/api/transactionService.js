@@ -14,6 +14,29 @@ class TransactionService {
   async getAll() {
     try {
       const params = {
+fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "amount_c"}},
+          {"field": {"Name": "type_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "created_at_c"}}
+        ]
+      };
+
+      // Initialize ApperClient if not already done
+      if (!this.apperClient) {
+        const { ApperClient } = window.ApperSDK;
+        this.apperClient = new ApperClient({
+          apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+          apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+        });
+        this.tableName = 'transaction_c';
+      }
+
+      const params = {
         fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "Tags"}},
