@@ -1,19 +1,19 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
 
 class TransactionService {
   constructor() {
-    this.tableName = 'transaction_c';
-    // Initialize ApperClient with project credentials
     const { ApperClient } = window.ApperSDK;
     this.apperClient = new ApperClient({
       apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
       apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
     });
+    this.tableName = 'transaction_c';
   }
 
-  async getAll() {
+async getAll() {
     try {
-const params = {
+      const params = {
         fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "Tags"}},
@@ -43,7 +43,7 @@ const params = {
     }
   }
 
-  async getById(id) {
+async getById(id) {
     try {
       const params = {
         fields: [
@@ -57,7 +57,6 @@ const params = {
           {"field": {"Name": "created_at_c"}}
         ]
       };
-
       const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
 
       if (!response.success) {
