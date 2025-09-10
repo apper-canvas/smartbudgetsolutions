@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
-import Select from "@/components/atoms/Select";
-import Card from "@/components/atoms/Card";
-import FormField from "@/components/molecules/FormField";
-import BudgetCard from "@/components/organisms/BudgetCard";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
 import { budgetService } from "@/services/api/budgetService";
 import { categoryService } from "@/services/api/categoryService";
 import { transactionService } from "@/services/api/transactionService";
-import { formatCurrency, getCurrentMonth, getMonthName } from "@/utils/formatting";
-
+import ApperIcon from "@/components/ApperIcon";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import FormField from "@/components/molecules/FormField";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Card from "@/components/atoms/Card";
+import Button from "@/components/atoms/Button";
+import BudgetCard from "@/components/organisms/BudgetCard";
+import { formatCurrency, generateMonthOptions, getCurrentMonth, getMonthName } from "@/utils/formatting";
 const Budget = () => {
   const [budgets, setBudgets] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -45,13 +44,12 @@ const Budget = () => {
     setError(null);
     
     try {
-      const [budgetsData, categoriesData] = await Promise.all([
+const [budgetsData, categoriesData] = await Promise.all([
         budgetService.getAll(),
         categoryService.getAll()
       ]);
-      
       setBudgets(budgetsData);
-      setCategories(categoriesData.filter(c => c.type === "expense"));
+      setCategories(categoriesData.filter(c => c.type_c === "expense"));
     } catch (err) {
       setError("Failed to load budget data");
     } finally {
@@ -114,10 +112,10 @@ const transactions = await transactionService.getAll();
       errors.month = "Month is required";
     }
 
-    // Check for duplicate category in same month
+// Check for duplicate category in same month
     const existingBudget = budgets.find(b => 
-      b.category === formData.category && 
-      b.month === formData.month &&
+      b.category_c === formData.category && 
+      b.month_c === formData.month &&
       (!editingBudget || b.Id !== editingBudget.Id)
     );
     
@@ -136,10 +134,11 @@ const transactions = await transactionService.getAll();
 
     setSubmitting(true);
     try {
-      const budgetData = {
-        ...formData,
-        limit: parseFloat(formData.limit),
-        spent: 0
+const budgetData = {
+        category_c: formData.category,
+        limit_c: parseFloat(formData.limit),
+        month_c: formData.month,
+        spent_c: 0
       };
 
       if (editingBudget) {
@@ -160,11 +159,11 @@ const transactions = await transactionService.getAll();
   };
 
   const handleEdit = (budget) => {
-    setEditingBudget(budget);
+setEditingBudget(budget);
     setFormData({
-      category: budget.category,
-      limit: budget.limit.toString(),
-      month: budget.month
+      category: budget.category_c,
+      limit: budget.limit_c.toString(),
+      month: budget.month_c
     });
     setFormErrors({});
     setShowBudgetForm(true);
@@ -188,11 +187,10 @@ const transactions = await transactionService.getAll();
     }
   };
 
-  const currentMonthBudgets = budgets.filter(b => b.month === selectedMonth);
-  const totalBudget = currentMonthBudgets.reduce((sum, b) => sum + b.limit, 0);
-  const totalSpent = currentMonthBudgets.reduce((sum, b) => sum + b.spent, 0);
+const currentMonthBudgets = budgets.filter(b => b.month_c === selectedMonth);
+  const totalBudget = currentMonthBudgets.reduce((sum, b) => sum + (b.limit_c || 0), 0);
+  const totalSpent = currentMonthBudgets.reduce((sum, b) => sum + (b.spent || 0), 0);
   const budgetUsage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
-
   const generateMonthOptions = () => {
     const months = [];
     const now = new Date();
@@ -335,10 +333,10 @@ const transactions = await transactionService.getAll();
                     onChange={(e) => handleInputChange("category", e.target.value)}
                     error={formErrors.category}
                   >
-                    <option value="">Select a category</option>
+<option value="">Select a category</option>
                     {categories.map(category => (
-                      <option key={category.Id} value={category.name}>
-                        {category.name}
+                      <option key={category.Id} value={category.name_c || category.Name}>
+                        {category.name_c || category.Name}
                       </option>
                     ))}
                   </Select>
