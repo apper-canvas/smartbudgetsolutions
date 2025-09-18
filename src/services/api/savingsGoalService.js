@@ -1,21 +1,6 @@
 import { toast } from 'react-toastify';
 
 class SavingsGoalService {
-  constructor() {
-    this.tableName = 'savings_goal_c';
-    this.apperClient = null;
-  }
-
-  getClient() {
-    if (!this.apperClient && window.ApperSDK) {
-      const { ApperClient } = window.ApperSDK;
-      this.apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-    }
-    return this.apperClient;
-  }
 
 constructor() {
     const { ApperClient } = window.ApperSDK;
